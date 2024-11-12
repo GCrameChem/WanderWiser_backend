@@ -53,3 +53,41 @@
 | 推荐系统内容数据库 | 暂定 RecBole                                                                  |
 | 行程管理数据库     | MySQL（暂定                                                                   |
 | Agent 记忆库       | 可能是 Redis，但这个 Langchain 会提供                                         |
+
+
+## 文件结构
+```
+WanderWiser_backend
+├─ app.js
+├─ bin
+│  └─ www
+├─ config
+│  └─ dbconfig.js
+├─ controllers
+│  ├─ testController.js
+│  ├─ userCenterController.js
+│  ├─ userLoginController.js
+│  └─ weatherController.js
+├─ Function
+│  └─ utilityFunctions.js
+├─ images
+│  ├─ architecture.png
+│  └─ deploy.png
+├─ package-lock.json
+├─ package.json
+├─ public
+│  └─ stylesheets
+│     └─ style.css
+├─ README.md
+├─ routes
+│  ├─ test.js
+│  ├─ userCenter.js
+│  ├─ userLogin.js
+│  └─ weather.js
+└─ views
+   ├─ error.ejs
+   ├─ error.jade
+   ├─ index.jade
+   └─ layout.jade
+
+```
