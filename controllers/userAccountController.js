@@ -20,7 +20,7 @@ const register = async (req, res) => {
     // 改进：哈希加密至少三次，并保证数据库中存储的是加密后的密码
 
     // 传递正确的值
-    const res = await executeQuery(sql, [username, userId, password, account_status]);
+    const result = await executeQuery(sql, [username, userId, password, account_status]);
 
     // 返回响应
     res.send({

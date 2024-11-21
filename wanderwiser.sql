@@ -11,7 +11,7 @@
  Target Server Version : 80040 (8.0.40)
  File Encoding         : 65001
 
- Date: 21/11/2024 22:17:26
+ Date: 22/11/2024 00:18:59
 */
 
 SET NAMES utf8mb4;
@@ -29,8 +29,7 @@ CREATE TABLE `recommendation`  (
   `feedback_status` enum('accept','reject','ignore') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `rating` int NULL DEFAULT NULL COMMENT '值范围：1-5',
   PRIMARY KEY (`recommendation_id`) USING BTREE,
-  INDEX `rec_user`(`user_id` ASC) USING BTREE,
-  CONSTRAINT `rec_user` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `rec_user`(`user_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -51,8 +50,7 @@ CREATE TABLE `tripmanage`  (
   `place_rest` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `place_trfc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`place_id`, `user_id`) USING BTREE,
-  INDEX `trip_user`(`user_id` ASC) USING BTREE,
-  CONSTRAINT `trip_user` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `trip_user`(`user_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -64,7 +62,7 @@ CREATE TABLE `tripmanage`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `useraccount`;
 CREATE TABLE `useraccount`  (
-  `user_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `registration_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -72,12 +70,14 @@ CREATE TABLE `useraccount`  (
   `personal_profile` json NULL,
   `account_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1235 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of useraccount
 -- ----------------------------
-INSERT INTO `useraccount` VALUES (1234, 'gin', '1234', '2024-11-21 21:59:05', '2024-11-21 21:59:07', NULL, '\0');
+INSERT INTO `useraccount` VALUES ('1234', 'gin', '1234', '2024-11-22 00:17:22', '2024-11-21 21:59:07', NULL, '0');
+INSERT INTO `useraccount` VALUES ('308777f0-7a9c-449b-b59e-f5d25a0ff81c', '233', '233', NULL, NULL, NULL, '0');
+INSERT INTO `useraccount` VALUES ('b2761612-07eb-4c0e-b9bc-04087ae4f17c', '233', '233', NULL, NULL, NULL, '0');
 
 -- ----------------------------
 -- Table structure for usermemory
@@ -91,10 +91,7 @@ CREATE TABLE `usermemory`  (
   `agent_response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `context_info` json NULL,
   `preference_record` json NULL,
-  PRIMARY KEY (`memory_id`) USING BTREE,
-  UNIQUE INDEX `memory_id_UNIQUE`(`memory_id` ASC) USING BTREE,
-  UNIQUE INDEX `user_id_UNIQUE`(`user_id` ASC) USING BTREE,
-  CONSTRAINT `memory_user` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  PRIMARY KEY (`memory_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -124,8 +121,7 @@ CREATE TABLE `userportrait`  (
   `click_rate` float NULL DEFAULT NULL COMMENT '用户一个月内的点击率，可针对特定的旅游推荐内容计算',
   `conversion_rate` float NULL DEFAULT NULL COMMENT '用户一个月内的转化率，如从查看推荐到实际预订旅游行程的转化比例',
   `recent_behavior_count` int NULL DEFAULT 0 COMMENT '用户周内特定行为（如搜索旅游目的地、查看旅游攻略等）的次数',
-  PRIMARY KEY (`user_id`) USING BTREE,
-  CONSTRAINT `portrait_user` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
