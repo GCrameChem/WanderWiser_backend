@@ -14,7 +14,7 @@
 
 ### 部署设计
 
-![部署设计](images/deploy.png)
+![部署设计](images/deployment.png)
 
 ## 用户界面层
 
