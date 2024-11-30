@@ -2,7 +2,9 @@
 
 ### **注意事项**
 
-项目安装与前后端连接测试教程现在可以先参考：[https://blog.csdn.net/m0_74141663/article/details/143171899?spm=1001.2014.3001.5501。](https://blog.csdn.net/m0_74141663/article/details/143171899?spm=1001.2014.3001.5501%E3%80%82)
+项目安装与前后端连接测试教程现在可参考：[[https://blog.csdn.net/m0_74141663/article/details/143171899?spm=1001.2014.3001.5501。](https://blog.csdn.net/m0_74141663/article/details/143171899?spm=1001.2014.3001.5501%E3%80%82)](https://blog.csdn.net/m0_74141663/article/details/143956653?spm=1001.2014.3001.5501)
+后端架构（Express.js）与开发说明见：https://blog.csdn.net/m0_74141663/article/details/144032869?spm=1001.2014.3001.5501
+
 
 目前已实现前后端连接
 
