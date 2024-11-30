@@ -15,7 +15,7 @@ const register = async (req, res) => {
     const account_status = '0';
     // 改进:加一个判断用户名是否已经存在的逻辑，不能重复申请
     // 改进：区分大小写（这个小bug也可能是数据库的问题
-    const sql = 'INSERT INTO useraccount (username, user_id, password, account_status) VALUES (?, ?, ?, ?)';
+    const sql = 'INSERT INTO useraccount (account, user_id, password, account_status) VALUES (?, ?, ?, ?)';
     // 改进：为每个不同的用户自动分配id
     // 改进：哈希加密至少三次，并保证数据库中存储的是加密后的密码
 
@@ -81,24 +81,24 @@ const login = async (req, res) => {
     }
 };
 
-// Get all users (for admin testing)
-const getAllUsers = async (req, res) => {
-  try {
-    const sql = 'SELECT * FROM useraccount';
-    const result = await executeQuery(sql);
+  // Get all users (for admin testing)
+  const getAllUsers = async (req, res) => {
+    try {
+      const sql = 'SELECT * FROM useraccount';
+      const result = await executeQuery(sql);
 
-    res.send({
-      result,
-      code: 200,
-    });
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).send('Internal Server Error');
-  }
-};
+      res.send({
+        result,
+        code: 200,
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
 
-export default { 
-  register,
-  login,
-  getAllUsers,
- };
+  export default { 
+    register,
+    login,
+    getAllUsers,
+  };
