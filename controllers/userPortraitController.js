@@ -14,7 +14,7 @@ const userPortraitController = {
     } = req.body;  
 
     if (!user_id) {  
-      return res.status(400).json({ error: 'user_id, user_gender, and user_age are required' });  
+      return res.status(400).json({ error: 'user_id is required' });  
     }  
 
     try {  
