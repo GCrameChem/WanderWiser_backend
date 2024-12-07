@@ -30,7 +30,7 @@ import tripManagerRoutes from './routes/tripManager.js';
 import userAccountRoutes from './routes/userAccount.js';
 import userCenterRoutes from './routes/userCenter.js';
 import weatherRoutes from './routes/weather.js';
-
+import mapRoutes from './routes/map.js';
 // 本项目中其他路由在这里引入
 
 
@@ -82,6 +82,9 @@ app.use('/tripManage', tripManagerRoutes);
 app.use('/userAccount', userAccountRoutes);
 app.use('/userCenter', userCenterRoutes);
 app.use('/weather', weatherRoutes);
+
+app.use('/map', mapRoutes);
+app.use(express.static('show'));// 设置静态文件夹
 // 本项目中的路由在这里进行相关路径挂载
 
 
