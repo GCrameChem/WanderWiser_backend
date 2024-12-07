@@ -9,7 +9,6 @@ const getTestMessage = (req, res) => {
   });
 };
 
-
 // 使用默认导出
 export default { 
   getTestMessage, 

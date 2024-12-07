@@ -1,0 +1,92 @@
+<!--本html文件是用来展示地图的，需要在代码第61行中输入关键字进行查询-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width"/>
+    <title>MAP</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <style>
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+        #panel {
+            position: absolute;
+            background-color: white;
+            max-height: 90%;
+            overflow-y: auto;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: "d93ffa2d204d1622080cd3774aa3a853", //安全密钥
+        };
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=91a96e972c2dcbf897c2b6fdb662aa27"></script>
+    <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+
+<body>
+    <div id="container"></div>
+    <div id="panel"></div>
+
+    <!-- 实例化地图 -->
+    <script type="text/javascript">
+        var map = new AMap.Map('container', {
+            viewMode: '2D', // 默认使用 2D 模式，如果希望使用带有俯仰角的 3D 模式，请设置 viewMode: '3D'
+            zoom:11, // 初始化地图层级
+            center: [104.06, 30.67] // 初始化地图中心点 成都
+        });
+
+        AMap.plugin(["AMap.PlaceSearch"], function() {
+
+            //构造地点查询类
+            var placeSearch = new AMap.PlaceSearch({
+                pageSize: 5, // 单页显示结果条数
+                pageIndex: 1, // 页码
+                city: "成都", // 兴趣点城市
+                citylimit: true,  //是否强制限制在设置的城市内搜索
+                map: map, // 展现结果的地图实例
+                panel: "panel", // 结果列表将在此容器中进行展示。
+                autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
+            });
+            //关键字查询
+            placeSearch.search('四川大学');
+        });
+    </script>
+
+   <!-- &lt;!&ndash;展示图层&ndash;&gt;
+    <script>
+        // 创建默认图层
+        const layer = new AMap.createDefaultLayer({
+        zooms: [3, 20], //可见级别
+        visible: true, //是否可见
+        opacity: 1, //透明度
+        zIndex: 0, //叠加层级
+        });
+        // 加载图层
+        const map = new AMap.Map("container", {
+            viewMode: "2D", //默认使用 2D 模式
+            zoom: 11, //地图级别
+            center: [116.397428, 39.90923], //地图中心点
+            layers: [layer], //layer为创建的默认图层
+        });
+        //创建实时路况图层
+        const traffic = new AMap.TileLayer.Traffic({
+            autoRefresh: true, //是否自动刷新，默认为false
+            interval: 180, //刷新间隔，默认180s
+        });
+        map.add(traffic); //通过add方法添加图层
+
+        traffic.show(); //显示路况图层
+    </script>-->
+
+</body>
+</html>

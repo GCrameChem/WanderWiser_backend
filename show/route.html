@@ -1,0 +1,84 @@
+<!--本html文件用于由 地点经纬度 得到 驾车路线规划
+第59行的zoom参数为地图显示的缩放级别，可根据需要修改
+使用时直接在代码第62行和第63行处修改起点与终点的经纬度即可-->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <title>地点关键字 + 驾车路线规划</title>
+  <style type="text/css">
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+    }
+    #panel {
+      position: fixed;
+      background-color: white;
+      max-height: 90%;
+      overflow-y: auto;
+      top: 10px;
+      right: 10px;
+      width: 280px;
+    }
+    #panel .map-call {
+      background-color: #009cf9;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+    #panel .map-lib-driving {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      overflow: hidden;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+  <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+  <script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+  <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: "d93ffa2d204d1622080cd3774aa3a853", //安全密钥
+    };
+  </script>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=91a96e972c2dcbf897c2b6fdb662aa27"></script>
+
+</head>
+<body>
+  <div id="container"></div>
+  <div id="panel"></div>
+
+  <script type="text/javascript">
+    //基本地图加载
+    var map = new AMap.Map("container", {
+      viewMode: '2D',  //默认使用 2D 模式
+      center: [104.06, 30.67],//地图中心点
+      zoom: 10 //地图显示的缩放级别
+    });
+
+    const startLngLat = [104.001882,30.553254] //起始点坐标
+    const endLngLat = [103.956527,30.569214] //终点坐标
+
+    //引入和创建驾车规划插件
+    AMap.plugin(["AMap.Driving"], function () {
+      const driving = new AMap.Driving({
+        map: map,
+        panel: "panel", //参数值为你页面定义容器的 id 值<div id="my-panel"></div>
+      });
+      //获取起终点规划线路
+      driving.search(startLngLat, endLngLat, function (status, result) {
+        if (status === "complete") {
+          //status：complete 表示查询成功，no_data 为查询无结果，error 代表查询错误
+          //查询成功时，result 即为对应的驾车导航信息
+          console.log(result);
+        } else {
+          console.log("获取驾车数据失败：" + result);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,6 +1,5 @@
 import fetch from 'node-fetch'; // 使用ESM的import语法
 
-
 // 通过城市名获取城市经纬度
 const getCoordinates = async (city, apiKey) => {
     const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
@@ -11,7 +10,6 @@ const getCoordinates = async (city, apiKey) => {
     if (data.length === 0) throw new Error('未找到城市');
     return { lat: data[0].lat, lon: data[0].lon };
 };
-
 
 // 通过经纬度获取天气信息
 const getWeather = async (req, res) => {

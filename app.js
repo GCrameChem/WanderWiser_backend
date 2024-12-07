@@ -67,8 +67,6 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 // ！！！！！！！！！！不要修改！！！！！！！！！！！！！
 
 
-
-
 // 本项目中的路由在这里进行相关路径挂载
 // 此乃测试路由挂载说明，进行接口测试时请使用 http://localhost:3000/test/test 进行测试
 app.use('/test', testRoutes);
@@ -77,8 +75,6 @@ app.use('/userAccount', userAccountRoutes);
 app.use('/userCenter', userCenterRoutes);
 app.use('/weather', weatherRoutes);
 // 本项目中的路由在这里进行相关路径挂载
-
-
 
 
 // catch 404 and forward to error handler
