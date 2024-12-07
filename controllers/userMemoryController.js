@@ -1,22 +1,30 @@
 import { executeQuery } from '../config/dbconfig.js'; // 数据库查询函数  
+import { v4 as uuidv4 } from 'uuid';
 
 const userMemoryController = {  
   // 添加新的用户记忆  
   addUserMemory: async (req, res) => {  
-    const { user_id, interaction_content, agent_response, context_info, preference_record } = req.body;  
+    const { user_id, interaction_content, agent_response, context_info, preference_record } = req.body;
 
     // 输入验证  
     if (!user_id || !interaction_content) {  
       return res.status(400).json({ error: 'user_id and interaction_content are required' });  
     }  
-
+    const memory_id = uuidv4();
     try {  
       const interaction_time = new Date(); // 获取当前时间  
       const sql = `  
-        INSERT INTO usermemory (user_id, interaction_time, interaction_content, agent_response, context_info, preference_record)  
-        VALUES (?, ?, ?, ?, ?, ?)`;  
-      await executeQuery(sql, [user_id, interaction_time, interaction_content, agent_response, context_info, preference_record]);  
-      res.status(201).json({ message: 'User memory added successfully' });  
+        INSERT INTO usermemory (memory_id, user_id, interaction_time, interaction_content, agent_response, context_info, preference_record)  
+        VALUES (?, ?, ?, ?, ?, ?, ?)`;  
+      await executeQuery(sql, [memory_id, user_id, interaction_time, interaction_content, agent_response, context_info, preference_record]);  
+      res.send({
+        message: 'userMemory added successfully',
+        data: {  
+          memory_id,  
+          // 可以添加其他需要返回给前端的字段  
+        }, 
+        code: 200,
+      }) 
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  
@@ -67,7 +75,6 @@ const userMemoryController = {
   // 根据 ID 查询用户记忆  
   getUserMemoriesById: async (req, res) => {  
     const { memory_id } = req.body;  
-
     // 输入验证  
     if (!memory_id) {  
       return res.status(400).json({ error: 'memory_id is required' });  
@@ -80,8 +87,10 @@ const userMemoryController = {
       if (results.length === 0) {  
         return res.status(404).json({ error: 'No memory found for this memory_id' });  
       }  
-
-      res.status(200).json(results);  
+      res.send({
+        results,
+        code: 200,
+      });  
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  
@@ -104,8 +113,10 @@ const userMemoryController = {
       if (results.length === 0) {  
         return res.status(404).json({ error: 'No memories found for this user' });  
       }  
-
-      res.status(200).json(results);  
+      res.send({
+        results,
+        code: 200,
+      });  
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  

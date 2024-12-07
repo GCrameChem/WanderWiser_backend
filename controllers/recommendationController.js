@@ -17,9 +17,16 @@ const recommendationController = {
       const creation_time = new Date(); // 获取当前时间  
       const sql = `  
         INSERT INTO recommendation (recommendation_id, user_id, recommendation_reason, creation_time, feedback_status, rating)  
-        VALUES (?, ?, ?, ?, ?)`;  
+        VALUES (?, ?, ?, ?, ?, ?)`;  
       await executeQuery(sql, [recommendation_id, user_id, recommendation_reason, creation_time, feedback_status, rating]);  
-      res.status(201).json({ message: 'Recommendation added successfully' });  
+      res.send({
+        message: 'Recommendation added successfully',
+        data: {  
+          recommendation_id,  
+          // 可以添加其他需要返回给前端的字段  
+        }, 
+        code: 200,
+      }) 
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  
@@ -83,8 +90,10 @@ const recommendationController = {
       if (results.length === 0) {  
         return res.status(404).json({ error: 'No recommendations found for this user' });  
       }  
-
-      res.status(200).json(results);  
+      res.send({
+        results,
+        code: 200,
+      });  
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  
@@ -94,7 +103,6 @@ const recommendationController = {
   // 根据推荐 ID 查询推荐信息  
   getRecommendationsById: async (req, res) => {  
     const { recommendation_id } = req.body;  
-
     // 输入验证  
     if (!recommendation_id) {  
       return res.status(400).json({ error: 'recommendation_id is required' });  
@@ -107,8 +115,10 @@ const recommendationController = {
       if (results.length === 0) {  
         return res.status(404).json({ error: 'No recommendation found for this recommendation_id' });  
       }  
-
-      res.status(200).json(results);  
+      res.send({
+        results,
+        code: 200,
+      }); 
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  

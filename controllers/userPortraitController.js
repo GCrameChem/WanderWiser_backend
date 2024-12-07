@@ -4,6 +4,7 @@ import { executeQuery } from '../config/dbconfig.js';
 const userPortraitController = {  
   // 增加用户  
   addUserPortrait: async (req, res) => {  
+    console.log("www");
     const {  
       user_id, user_gender, user_age, birth_day,  
       travel_history, preferred_travel_season, interests,  
@@ -11,10 +12,12 @@ const userPortraitController = {
       budget, income_level, consumption_level,  
       relationship, other_profile, click_rate,  
       conversion_rate, recent_behavior_count  
-    } = req.body;  
-
+  } = req.body;  
+  
+  console.log(req.body);  
+  
     if (!user_id) {  
-      return res.status(400).json({ error: 'user_id, user_gender, and user_age are required' });  
+      return res.status(400).json({ error: 'user_id is required' });  
     }  
 
     try {  
@@ -37,7 +40,7 @@ const userPortraitController = {
         conversion_rate, recent_behavior_count  
       ]);  
 
-      res.status(201).json({ message: 'User portrait created successfully' });  
+      res.status(200).json({ message: 'User portrait created successfully' });  
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  
@@ -46,7 +49,7 @@ const userPortraitController = {
 
   // 查找用户偏好数据  
   getUserPortrait: async (req, res) => {  
-    const { user_id } = req.params;  
+    const { user_id } = req.body;  
 
     try {  
       const sql = 'SELECT * FROM userportrait WHERE user_id = ?';  
@@ -55,8 +58,10 @@ const userPortraitController = {
       if (results.length === 0) {  
         return res.status(404).json({ error: 'User portrait not found' });  
       }  
-
-      res.status(200).json(results[0]);  
+      res.send({
+        results,
+        code: 200,
+      }); 
     } catch (error) {  
       console.error('Database error:', error);  
       res.status(500).json({ error: 'Internal Server Error' });  
@@ -64,10 +69,9 @@ const userPortraitController = {
   },  
 
   // 更新用户偏好数据 
-  updateUserPortrait: async (req, res) => {  
-    const { user_id } = req.params;  
+  updateUserPortrait: async (req, res) => { 
     const {  
-      user_gender, user_age, birth_day,  
+      user_id, user_gender, user_age, birth_day,  
       travel_history, preferred_travel_season, interests,  
       place_residence, occupation, education_level,  
       budget, income_level, consumption_level,  
@@ -120,7 +124,7 @@ const userPortraitController = {
 
   // 删除用户画像  
   deleteUserPortrait: async (req, res) => {  
-    const { user_id } = req.params;  
+    const { user_id } = req.body;  
 
     try {  
       const sql = 'DELETE FROM userportrait WHERE user_id = ?';  
