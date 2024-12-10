@@ -6,6 +6,8 @@ router.post('/add', tripController.addTripManage);
 router.delete('/delete', tripController.deleteTripManage); 
 router.post('/get', tripController.getTripManageByUserId); 
 router.put('/update', tripController.updateTripManage); 
+router.post('/getTripMD', tripController.getTripManageMarkdown);
+router.post('/getDailyMD', tripController.getDailyTripMarkdown);
  
 router.post('/dailytrips/add', dailyTripController.addDailyTrip);   
 router.delete('/dailytrips/delete', dailyTripController.deleteDailyTrip); 
