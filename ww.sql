@@ -24,12 +24,16 @@ DROP TABLE IF EXISTS `activity`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `activity` (
   `act_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '活动id',
+  `actname` varchar(255) DEFAULT NULL,
   `day` int NOT NULL,
   `start_time` datetime DEFAULT NULL,
   `end_time` datetime DEFAULT NULL,
   `display_image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '宣传图',
   `booking_method` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '预定方式',
   `transport` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '交通方式',
+  `activity_content` text,
+  `address` varchar(255) DEFAULT NULL,
+  `recommended_dishes` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`act_id`,`day`) USING BTREE,
   KEY `day_act` (`day`) USING BTREE,
   CONSTRAINT `day_act` FOREIGN KEY (`day`) REFERENCES `dailytrip` (`day`) ON DELETE RESTRICT ON UPDATE RESTRICT
@@ -42,6 +46,7 @@ CREATE TABLE `activity` (
 
 LOCK TABLES `activity` WRITE;
 /*!40000 ALTER TABLE `activity` DISABLE KEYS */;
+INSERT INTO `activity` VALUES ('010d1c27-8bb9-4268-8154-13a50c268638','四川博物馆',1,'2025-12-03 09:26:34','2025-07-25 13:23:04','![四川博物馆](https://example.com/scmuseum.jpg)','[点击预约门票](https://example.com/book-scmuseum)','从酒店出发，地铁2号线到浣花溪站（约20分钟）。','参观博物馆展厅，了解巴蜀文化与历史文物。','成都市青羊区浣花南路251号','青柠和茄子挞'),('5cf14e8a-80b8-4132-ad83-4b7de6cc6656','四川博物馆',1,'2025-12-03 09:26:34','2025-07-25 13:23:04','![四川博物馆](https://example.com/scmuseum.jpg)','[点击预约门票](https://example.com/book-scmuseum)','从酒店出发，地铁2号线到浣花溪站（约20分钟）。','参观博物馆展厅，了解巴蜀文化与历史文物。','成都市青羊区浣花南路251号','青柠和茄子挞'),('8122aa6d-8a86-4fdb-a932-09caa7cb5bd3','四川博物馆',1,'2025-12-03 09:26:34','2025-07-25 13:23:04','![四川博物馆](https://example.com/scmuseum.jpg)','[点击预约门票](https://example.com/book-scmuseum)','从酒店出发，地铁2号线到浣花溪站（约20分钟）。','参观博物馆展厅，了解巴蜀文化与历史文物。','成都市青羊区浣花南路251号','青柠和茄子挞'),('d21b782d-e85b-48c6-a88e-2355df960e4e','四川博物馆',1,'2025-12-03 09:26:34','2025-07-25 13:23:04','![四川博物馆](https://example.com/scmuseum.jpg)','[点击预约门票](https://example.com/book-scmuseum)','从酒店出发，地铁2号线到浣花溪站（约20分钟）。','参观博物馆展厅，了解巴蜀文化与历史文物。','成都市青羊区浣花南路251号','青柠和茄子挞'),('e7b6ecc6-5bca-4622-aa5e-97d11c2dfbb4','四川博物馆',1,'2025-12-03 09:26:34','2025-07-25 13:23:04','![四川博物馆](https://example.com/scmuseum.jpg)','[点击预约门票](https://example.com/book-scmuseum)','从酒店出发，地铁2号线到浣花溪站（约20分钟）。','参观博物馆展厅，了解巴蜀文化与历史文物。','成都市青羊区浣花南路251号','青柠和茄子挞'),('e835d49d-faf6-4883-a9b4-9e0dc96e41b3','四川博物馆',1,'2025-12-03 09:26:34','2025-07-25 13:23:04','![四川博物馆](https://example.com/scmuseum.jpg)','[点击预约门票](https://example.com/book-scmuseum)','从酒店出发，地铁2号线到浣花溪站（约20分钟）。','参观博物馆展厅，了解巴蜀文化与历史文物。','成都市青羊区浣花南路251号','青柠和茄子挞');
 /*!40000 ALTER TABLE `activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,7 +60,14 @@ DROP TABLE IF EXISTS `dailytrip`;
 CREATE TABLE `dailytrip` (
   `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '方案编号',
   `day` int NOT NULL COMMENT '日程编号',
-  `overview` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '内容总览',
+  `location` varchar(255) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `weather` varchar(255) DEFAULT NULL,
+  `keywords` text,
+  `abstract` text,
+  `accomodation` varchar(255) DEFAULT NULL,
+  `summary` text,
+  `carry_items` text,
   PRIMARY KEY (`plan_id` DESC,`day`) USING BTREE,
   KEY `plan_day` (`plan_id`) USING BTREE,
   KEY `day` (`day`) USING BTREE,
@@ -69,6 +81,7 @@ CREATE TABLE `dailytrip` (
 
 LOCK TABLES `dailytrip` WRITE;
 /*!40000 ALTER TABLE `dailytrip` DISABLE KEYS */;
+INSERT INTO `dailytrip` VALUES ('dfc279c3-8b57-4f3b-98b5-bd151e4df10d',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）'),('d4f60a16-2bcf-4aae-8a70-ccfd62f813c2',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）'),('d37e1cf5-a8af-4ccf-a1de-be933db2e2d4',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）'),('befd31a5-f0ef-4c13-acd2-724b02cd9d40',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）'),('564171bf-1132-431c-ad10-238458a2972c',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）'),('3f2bb73c-50b0-47b3-a92f-4401f730d069',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）'),('117276b8-21d8-44ee-82fc-24aa0ae7396b',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）');
 /*!40000 ALTER TABLE `dailytrip` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,11 +124,7 @@ CREATE TABLE `tripmanage` (
   `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '方案id',
   `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `plan_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `date` date DEFAULT NULL COMMENT '用于显示的日期',
-  `weather` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `summary` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `accomodation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '住宿点',
+  `days` tinyint DEFAULT NULL,
   PRIMARY KEY (`plan_id`,`user_id`) USING BTREE,
   KEY `plan_id` (`plan_id`) USING BTREE,
   KEY `user_trip` (`user_id`) USING BTREE,
@@ -129,6 +138,7 @@ CREATE TABLE `tripmanage` (
 
 LOCK TABLES `tripmanage` WRITE;
 /*!40000 ALTER TABLE `tripmanage` DISABLE KEYS */;
+INSERT INTO `tripmanage` VALUES ('117276b8-21d8-44ee-82fc-24aa0ae7396b','4da1cbb7-f966-4a6b-82b0-f2845d13b6ba','四川之旅：大熊猫的家园与自然奇观之旅',4),('3f2bb73c-50b0-47b3-a92f-4401f730d069','9a79dec0-d960-4d51-b232-0594bb513d0d','四川之旅：大熊猫的家园与自然奇观之旅',4),('564171bf-1132-431c-ad10-238458a2972c','25ed8fe4-862a-4fd5-a02e-00fd5cb8d7bb','四川之旅：大熊猫的家园与自然奇观之旅',4),('befd31a5-f0ef-4c13-acd2-724b02cd9d40','762592ae-5f37-4bf8-ac0c-c17a88fcf3d6','四川之旅：大熊猫的家园与自然奇观之旅',4),('d37e1cf5-a8af-4ccf-a1de-be933db2e2d4','6389c2e4-414f-43f8-a52e-28968c63ce13','四川之旅：大熊猫的家园与自然奇观之旅',4),('d4f60a16-2bcf-4aae-8a70-ccfd62f813c2','8515a66b-80f1-4785-8f92-9c054242493d','四川之旅：大熊猫的家园与自然奇观之旅',4),('dfc279c3-8b57-4f3b-98b5-bd151e4df10d','464405e1-31cf-42dd-b907-4d4b7e24edb4','四川之旅：大熊猫的家园与自然奇观之旅',4);
 /*!40000 ALTER TABLE `tripmanage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,6 +169,7 @@ CREATE TABLE `useraccount` (
 
 LOCK TABLES `useraccount` WRITE;
 /*!40000 ALTER TABLE `useraccount` DISABLE KEYS */;
+INSERT INTO `useraccount` VALUES ('25ed8fe4-862a-4fd5-a02e-00fd5cb8d7bb','gin','1234','2024-12-11 00:15:42','2024-12-11 00:15:42','male',NULL,NULL,'activated'),('464405e1-31cf-42dd-b907-4d4b7e24edb4','gin','1234','2024-12-11 00:28:38','2024-12-11 00:28:38','male',NULL,NULL,'activated'),('4da1cbb7-f966-4a6b-82b0-f2845d13b6ba','gin','1234','2024-12-11 00:14:15','2024-12-11 00:14:15','male',NULL,NULL,'activated'),('6389c2e4-414f-43f8-a52e-28968c63ce13','gin','1234','2024-12-11 00:26:46','2024-12-11 00:26:46','male',NULL,NULL,'activated'),('762592ae-5f37-4bf8-ac0c-c17a88fcf3d6','gin','1234','2024-12-10 23:14:50','2024-12-10 23:14:50','male',NULL,NULL,'activated'),('8515a66b-80f1-4785-8f92-9c054242493d','gin','1234','2024-12-11 00:16:43','2024-12-11 00:16:43','male',NULL,NULL,'activated'),('9a79dec0-d960-4d51-b232-0594bb513d0d','gin','1234','2024-12-11 00:22:27','2024-12-11 00:22:27','male',NULL,NULL,'activated');
 /*!40000 ALTER TABLE `useraccount` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,4 +252,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-06 15:19:53
+-- Dump completed on 2024-12-11  0:45:46
