@@ -61,6 +61,32 @@ const tripController = {
       }  
   },  
 
+  // 根据用户 ID 和 计划 ID 查询并返回 tripmanage  
+  getTripManageByUId_PId: async (req, res) => {  
+    const { user_id, plan_id } = req.body;  
+    // 输入验证  
+    if (!user_id || !plan_id) {  
+      return res.status(400).json({ error: 'user_id and plan_id are required' });  
+    }  
+
+    try {  
+      const sql = 'SELECT * FROM tripmanage WHERE user_id = ? AND plan_id = ?';  
+      const results = await executeQuery(sql, [user_id, plan_id]);  
+
+      if (results.length === 0) {  
+        return res.status(404).json({ error: 'No trips found for this user_id and plan_id' });  
+      }  
+
+      res.send({  
+        results,  
+        code: 200,  
+      });  
+    } catch (error) {  
+      console.error('Database error:', error);  
+      res.status(500).json({ error: 'Internal Server Error' });  
+    }  
+  },   
+
   // 根据用户 ID 查询并返回 tripmanage  
   getTripManageByUserId: async (req, res) => {  
       const { user_id } = req.body;  
@@ -215,17 +241,43 @@ const tripController = {
       markdownContent += `- ${carry_items ? carry_items.split(',').join('\n- ') : '无'}\n\n`;  
       markdownContent += `---\n\n`;  
       markdownContent += `### **时间与活动安排**\n\n`;  
-  
+
       activityResults.forEach(activity => {  
         markdownContent += `#### **${activity.start_time.toLocaleString('zh-CN', { hour: '2-digit', minute: '2-digit' })} - ${activity.actname}**\n`;  
-        markdownContent += `- **活动内容**: ${activity.activity_content}\n`;  
-        markdownContent += `- **地址**: ${activity.address}\n`;  
-        markdownContent += `- **交通方式**: ${activity.transport}\n`;  
-        markdownContent += `- **宣传图片**:\n![活动图片](${activity.display_image})\n`;  
-        markdownContent += `- **预定链接**: [点击预约门票](${activity.booking_method})\n\n`;  
+        
+        // 检查并添加活动内容  
+        if (activity.activity_content) {  
+          markdownContent += `- **活动内容**: ${activity.activity_content}\n`;  
+        }  
+        
+        // 检查并添加推荐菜品  
+        if (activity.recommended_dishes) {  
+          markdownContent += `- **推荐菜品**: ${activity.recommended_dishes}\n`;  
+        }  
+        
+        // 检查并添加地址  
+        if (activity.address) {  
+          markdownContent += `- **地址**: ${activity.address}\n`;  
+        }  
+        
+        // 检查并添加交通方式  
+        if (activity.transport) {  
+          markdownContent += `- **交通方式**: ${activity.transport}\n`;  
+        }  
+        
+        // 检查并添加宣传图片  
+        if (activity.display_image) {  
+          markdownContent += `- **宣传图片**:\n![活动图片](${activity.display_image})\n`;  
+        }  
+        
+        // 检查并添加预定链接  
+        if (activity.booking_method) {  
+          markdownContent += `- **预定链接**: [点击预约门票](${activity.booking_method})\n`;  
+        }  
+        
         markdownContent += `---\n\n`;  
       });  
-  
+
       markdownContent += `### **每日总结**\n`;  
       markdownContent += `${summary}\n`;  
   
@@ -301,6 +353,32 @@ const dailyTripController = {
     }  
   },  
 
+  // 根据 plan_id 和 day 查询并返回 dailytrip  
+  getDailyTripByPId_Day: async (req, res) => {  
+    const { plan_id, day } = req.body;  
+
+    // 输入验证  
+    if (!plan_id || !day) {  
+      return res.status(400).json({ error: 'plan_id and day are required' });  
+    }  
+
+    try {  
+      const sql = 'SELECT * FROM dailytrip WHERE plan_id = ? AND day = ?';  
+      const results = await executeQuery(sql, [plan_id, day]);  
+
+      if (results.length === 0) {  
+        return res.status(404).json({ error: 'No daily trips found for this plan_id and day' });  
+      }  
+      res.send({  
+        results,  
+        code: 200,  
+      });  
+    } catch (error) {  
+      console.error('Database error:', error);  
+      res.status(500).json({ error: 'Internal Server Error' });  
+    }  
+  },  
+  
   // 根据 plan_id 查询并返回 dailytrip  
   getDailyTripByPlanId: async (req, res) => {  
     const { plan_id } = req.body;  
@@ -360,19 +438,19 @@ const dailyTripController = {
 const activityController = {  
   // 添加新的活动  
   addActivity: async (req, res) => {  
-    const {actname, day, start_time, end_time, display_image, booking_method, transport, activity_content, address, recommended_dishes } = req.body;  
+    const {plan_id,actname, day, start_time, end_time, display_image, booking_method, transport, activity_content, address, recommended_dishes } = req.body;  
 
     const act_id = uuidv4();
     // 输入验证  
-    if (day == null) {  
-      return res.status(400).json({ error: 'day is required' });  
+    if (day == null || plan_id == null) {  
+      return res.status(400).json({ error: 'plan_id and day are required' });  
     }  
 
     try {  
       const sql = `  
-        INSERT INTO activity (act_id, actname, day, start_time, end_time, display_image, booking_method, transport, activity_content, address, recommended_dishes)  
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;  
-      await executeQuery(sql, [act_id, actname, day, start_time, end_time, display_image, booking_method, transport, activity_content, address, recommended_dishes ]);  
+        INSERT INTO activity (act_id, plan_id, actname, day, start_time, end_time, display_image, booking_method, transport, activity_content, address, recommended_dishes)  
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;  
+      await executeQuery(sql, [act_id, plan_id, actname, day, start_time, end_time, display_image, booking_method, transport, activity_content, address, recommended_dishes ]);  
       res.send({
         message: 'Activity added successfully',
         data: {  
@@ -405,21 +483,21 @@ const activityController = {
     }  
   },
 
-  //根据 day 查询并返回相关信息  
+  //根据 day和plan_id 查询并返回相关信息  
   getActivitiesByDay: async (req, res) => {  
-    const { day } = req.body;  
+    const { plan_id, day } = req.body;  
 
     // 输入验证  
-    if (!day) {  
-      return res.status(400).json({ error: 'day is required' });  
+    if (!plan_id || !day) {  
+      return res.status(400).json({ error: 'plan_id and day are required' });  
     }  
 
     try {  
-      const sql = 'SELECT * FROM dailytrip WHERE day = ?';  
-      const results = await executeQuery(sql, [day]);  
+      const sql = 'SELECT * FROM dailytrip WHERE day = ? AND plan_id = ?';  
+      const results = await executeQuery(sql, [day, plan_id]);  
 
       if (results.length === 0) {  
-        return res.status(404).json({ error: 'No trips found for this day' });  
+        return res.status(404).json({ error: 'No trips found for this plan_id and day' });  
       }  
       res.send({
         results,
