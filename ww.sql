@@ -1,258 +1,215 @@
--- MySQL dump 10.13  Distrib 8.0.39, for Win64 (x86_64)
---
--- Host: localhost    Database: wanderwiser
--- ------------------------------------------------------
--- Server version	8.0.39
+/*
+ Navicat Premium Data Transfer
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+ Source Server         : TestOne
+ Source Server Type    : MySQL
+ Source Server Version : 80040 (8.0.40)
+ Source Host           : localhost:3306
+ Source Schema         : yk
 
---
--- Table structure for table `activity`
---
+ Target Server Type    : MySQL
+ Target Server Version : 80040 (8.0.40)
+ File Encoding         : 65001
 
+ Date: 13/12/2024 15:51:35
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for activity
+-- ----------------------------
 DROP TABLE IF EXISTS `activity`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `activity` (
+CREATE TABLE `activity`  (
   `act_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '活动id',
-  `plan_id` varchar(255) NOT NULL,
-  `actname` varchar(255) DEFAULT NULL,
+  `actname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `day` int NOT NULL,
-  `start_time` datetime DEFAULT NULL,
-  `end_time` datetime DEFAULT NULL,
-  `display_image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '宣传图',
-  `booking_method` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '预定方式',
-  `transport` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '交通方式',
-  `activity_content` text,
-  `address` varchar(255) DEFAULT NULL,
-  `recommended_dishes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`act_id`) USING BTREE,
-  KEY `day_act` (`day`) USING BTREE,
-  KEY `fk_tripmanage` (`plan_id`),
-  CONSTRAINT `day_act` FOREIGN KEY (`day`) REFERENCES `dailytrip` (`day`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `fk_tripmanage` FOREIGN KEY (`plan_id`) REFERENCES `tripmanage` (`plan_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `start_time` datetime NULL DEFAULT NULL,
+  `end_time` datetime NULL DEFAULT NULL,
+  `display_image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '宣传图',
+  `booking_method` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '预定方式',
+  `transport` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '交通方式',
+  `activity_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `recommended_dishes` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`act_id`, `day`) USING BTREE,
+  INDEX `day_act`(`day` ASC) USING BTREE,
+  CONSTRAINT `day_act` FOREIGN KEY (`day`) REFERENCES `dailytrip` (`day`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Dumping data for table `activity`
---
+-- ----------------------------
+-- Records of activity
+-- ----------------------------
 
-LOCK TABLES `activity` WRITE;
-/*!40000 ALTER TABLE `activity` DISABLE KEYS */;
-INSERT INTO `activity` VALUES ('1f134c9f-db54-4175-860d-2f7cf345956d','f890e665-08ac-4daf-8ae9-77d38d9b6b65','四川博物馆',1,'2025-12-03 09:26:34','2025-07-25 13:23:04','![四川博物馆](https://example.com/scmuseum.jpg)','[点击预约门票](https://example.com/book-scmuseum)','从酒店出发，地铁2号线到浣花溪站（约20分钟）。','参观博物馆展厅，了解巴蜀文化与历史文物。','成都市青羊区浣花南路251号',''),('7810c0ef-a511-494e-9d74-ab467343932c','f890e665-08ac-4daf-8ae9-77d38d9b6b65','附近餐厅午餐',1,'2025-12-03 11:44:37','2024-01-22 04:37:12','![四川菜](https://example.com/sichuancuisine.jpg)','','步行约5分钟。','','博物馆旁 XX 餐厅','四川麻婆豆腐、回锅肉');
-/*!40000 ALTER TABLE `activity` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `dailytrip`
---
-
+-- ----------------------------
+-- Table structure for dailytrip
+-- ----------------------------
 DROP TABLE IF EXISTS `dailytrip`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `dailytrip` (
+CREATE TABLE `dailytrip`  (
   `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '方案编号',
   `day` int NOT NULL COMMENT '日程编号',
-  `location` varchar(255) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `weather` varchar(255) DEFAULT NULL,
-  `keywords` text,
-  `abstract` text,
-  `accomodation` varchar(255) DEFAULT NULL,
-  `summary` text,
-  `carry_items` text,
-  PRIMARY KEY (`plan_id` DESC,`day`) USING BTREE,
-  KEY `plan_day` (`plan_id`) USING BTREE,
-  KEY `day` (`day`) USING BTREE,
-  CONSTRAINT `plan_day` FOREIGN KEY (`plan_id`) REFERENCES `tripmanage` (`plan_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `date` date NULL DEFAULT NULL,
+  `weather` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `keywords` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `abstract` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `accomodation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `summary` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `carry_items` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  PRIMARY KEY (`plan_id`, `day`) USING BTREE,
+  INDEX `plan_day`(`plan_id` ASC) USING BTREE,
+  INDEX `day`(`day` ASC) USING BTREE,
+  CONSTRAINT `plan_day` FOREIGN KEY (`plan_id`) REFERENCES `tripmanage` (`plan_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Dumping data for table `dailytrip`
---
+-- ----------------------------
+-- Records of dailytrip
+-- ----------------------------
 
-LOCK TABLES `dailytrip` WRITE;
-/*!40000 ALTER TABLE `dailytrip` DISABLE KEYS */;
-INSERT INTO `dailytrip` VALUES ('f890e665-08ac-4daf-8ae9-77d38d9b6b65',1,'四川博物馆','2024-08-05','晴','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）'),('f890e665-08ac-4daf-8ae9-77d38d9b6b65',2,'四川博物馆','2024-08-06','雨','历史与文化','参观四川博物馆，感受四川深厚的历史文化底蕴。','成都市中心某酒店','今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！','雨伞（防晒或下雨用）,充电宝,笔记本（用于记录见闻）');
-/*!40000 ALTER TABLE `dailytrip` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `recommendation`
---
-
+-- ----------------------------
+-- Table structure for recommendation
+-- ----------------------------
 DROP TABLE IF EXISTS `recommendation`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `recommendation` (
-  `recommendation_id` varchar(255) NOT NULL,
-  `user_id` varchar(255) DEFAULT NULL,
-  `recommendation_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `creation_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `feedback_status` enum('accept','reject','ignore') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `rating` int DEFAULT NULL COMMENT '值范围：1-5',
+CREATE TABLE `recommendation`  (
+  `recommendation_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `recommendation_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `creation_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `feedback_status` enum('accept','reject','ignore') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `rating` int NULL DEFAULT NULL COMMENT '值范围：1-5',
   PRIMARY KEY (`recommendation_id`) USING BTREE,
-  KEY `rec_user` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  INDEX `rec_user`(`user_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Dumping data for table `recommendation`
---
+-- ----------------------------
+-- Records of recommendation
+-- ----------------------------
 
-LOCK TABLES `recommendation` WRITE;
-/*!40000 ALTER TABLE `recommendation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `recommendation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tripmanage`
---
-
+-- ----------------------------
+-- Table structure for tripmanage
+-- ----------------------------
 DROP TABLE IF EXISTS `tripmanage`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tripmanage` (
+CREATE TABLE `tripmanage`  (
   `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '方案id',
   `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `plan_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `days` tinyint DEFAULT NULL,
-  PRIMARY KEY (`plan_id`) USING BTREE,
-  KEY `plan_id` (`plan_id`) USING BTREE,
-  KEY `user_trip` (`user_id`) USING BTREE,
-  CONSTRAINT `user_trip` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `plan_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `days` tinyint NULL DEFAULT NULL,
+  PRIMARY KEY (`plan_id`, `user_id`) USING BTREE,
+  INDEX `plan_id`(`plan_id` ASC) USING BTREE,
+  INDEX `user_trip`(`user_id` ASC) USING BTREE,
+  CONSTRAINT `userid1` FOREIGN KEY (`user_id`) REFERENCES `userdata` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Dumping data for table `tripmanage`
---
+-- ----------------------------
+-- Records of tripmanage
+-- ----------------------------
 
-LOCK TABLES `tripmanage` WRITE;
-/*!40000 ALTER TABLE `tripmanage` DISABLE KEYS */;
-INSERT INTO `tripmanage` VALUES ('86ed1fdc-e70f-4092-9d3a-840ada927e49','fe42893b-453d-4f18-9575-6c267a754992','参观博物馆',3),('f890e665-08ac-4daf-8ae9-77d38d9b6b65','fe42893b-453d-4f18-9575-6c267a754992','四川之旅：大熊猫的家园与自然奇观之旅',4);
-/*!40000 ALTER TABLE `tripmanage` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `useraccount`
---
-
+-- ----------------------------
+-- Table structure for useraccount
+-- ----------------------------
 DROP TABLE IF EXISTS `useraccount`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `useraccount` (
+CREATE TABLE `useraccount`  (
   `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `account` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `account` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `registration_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `last_login_time` datetime DEFAULT NULL,
+  `registration_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `last_login_time` datetime NULL DEFAULT NULL,
   `user_gender` enum('male','female') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `user_age` int DEFAULT NULL,
-  `personal_profile` json DEFAULT NULL,
-  `account_status` enum('activated','disabled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `user_age` int NULL DEFAULT NULL,
+  `personal_profile` json NULL,
+  `account_status` enum('activated','disabled') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Dumping data for table `useraccount`
---
+-- ----------------------------
+-- Records of useraccount
+-- ----------------------------
+INSERT INTO `useraccount` VALUES ('25ed8fe4-862a-4fd5-a02e-00fd5cb8d7bb', 'gin', '1234', '2024-12-11 00:15:42', '2024-12-11 00:15:42', 'male', NULL, NULL, 'activated');
+INSERT INTO `useraccount` VALUES ('464405e1-31cf-42dd-b907-4d4b7e24edb4', 'gin', '1234', '2024-12-11 00:28:38', '2024-12-11 00:28:38', 'male', NULL, NULL, 'activated');
+INSERT INTO `useraccount` VALUES ('4da1cbb7-f966-4a6b-82b0-f2845d13b6ba', 'gin', '1234', '2024-12-11 00:14:15', '2024-12-11 00:14:15', 'male', NULL, NULL, 'activated');
+INSERT INTO `useraccount` VALUES ('6389c2e4-414f-43f8-a52e-28968c63ce13', 'gin', '1234', '2024-12-11 00:26:46', '2024-12-11 00:26:46', 'male', NULL, NULL, 'activated');
+INSERT INTO `useraccount` VALUES ('762592ae-5f37-4bf8-ac0c-c17a88fcf3d6', 'gin', '1234', '2024-12-10 23:14:50', '2024-12-10 23:14:50', 'male', NULL, NULL, 'activated');
+INSERT INTO `useraccount` VALUES ('8515a66b-80f1-4785-8f92-9c054242493d', 'gin', '1234', '2024-12-11 00:16:43', '2024-12-11 00:16:43', 'male', NULL, NULL, 'activated');
+INSERT INTO `useraccount` VALUES ('9a79dec0-d960-4d51-b232-0594bb513d0d', 'gin', '1234', '2024-12-11 00:22:27', '2024-12-11 00:22:27', 'male', NULL, NULL, 'activated');
 
-LOCK TABLES `useraccount` WRITE;
-/*!40000 ALTER TABLE `useraccount` DISABLE KEYS */;
-INSERT INTO `useraccount` VALUES ('fe42893b-453d-4f18-9575-6c267a754992','gin','1234','2024-12-11 17:50:02','2024-12-11 17:50:02','male',NULL,NULL,'activated');
-/*!40000 ALTER TABLE `useraccount` ENABLE KEYS */;
-UNLOCK TABLES;
+-- ----------------------------
+-- Table structure for userdata
+-- ----------------------------
+DROP TABLE IF EXISTS `userdata`;
+CREATE TABLE `userdata`  (
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '唯一区别不同用户的方式',
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户名(注册与登录时使用',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '昵称(用户界面可显示',
+  `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '性别\n(仅限男/女',
+  `age` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '年龄',
+  `school` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '学校',
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '个人描述',
+  PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Table structure for table `usermemory`
---
+-- ----------------------------
+-- Records of userdata
+-- ----------------------------
+INSERT INTO `userdata` VALUES ('43acd90c-05d6-4c1f-8acf-897179a1d956', 'gin', NULL, '1234', 'G', '未知', '999', 'SCU', '默认简介');
+INSERT INTO `userdata` VALUES ('47d1be6c-b00d-4eee-9043-36fdf2a36c5d', 'gin', 'wangyuhan030913@163.com', '123456', '默认昵称', '未知', '未知', '未知', '默认简介');
+INSERT INTO `userdata` VALUES ('7038d900-8773-4312-a8b4-1ff906d6783d', 'gin', NULL, '1234', '默认昵称', '未知', '未知', '未知', '默认简介');
+INSERT INTO `userdata` VALUES ('8b350830-4a84-43f5-8797-cc75b65566c9', 'tqq', '2058406739@qq.com', '1207', '默认昵称', '未知', '未知', '未知', '默认简介');
+INSERT INTO `userdata` VALUES ('984731e8-b6ad-4b7f-bb56-fa76681dfb01', 'wang', '1802231683@qq.com', '12345', '小涵', '女', '20', '四川大学', '默认简介');
+INSERT INTO `userdata` VALUES ('a2e1ca9e-c3a7-422a-b00b-e89ef30e713e', 'y', NULL, 't', '123', '女', '18', '四川大学', 'lalala');
 
+-- ----------------------------
+-- Table structure for usermemory
+-- ----------------------------
 DROP TABLE IF EXISTS `usermemory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usermemory` (
-  `memory_id` varchar(255) NOT NULL,
+CREATE TABLE `usermemory`  (
+  `memory_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `interaction_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `interaction_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `agent_response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `context_info` json DEFAULT NULL,
-  `preference_record` json DEFAULT NULL,
+  `interaction_time` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `interaction_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `agent_response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
+  `context_info` json NULL,
+  `preference_record` json NULL,
   PRIMARY KEY (`memory_id`) USING BTREE,
-  UNIQUE KEY `memory_id_UNIQUE` (`memory_id`) USING BTREE,
-  UNIQUE KEY `user_id_UNIQUE` (`user_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  UNIQUE INDEX `memory_id_UNIQUE`(`memory_id` ASC) USING BTREE,
+  UNIQUE INDEX `user_id_UNIQUE`(`user_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Dumping data for table `usermemory`
---
+-- ----------------------------
+-- Records of usermemory
+-- ----------------------------
 
-LOCK TABLES `usermemory` WRITE;
-/*!40000 ALTER TABLE `usermemory` DISABLE KEYS */;
-/*!40000 ALTER TABLE `usermemory` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `userportrait`
---
-
+-- ----------------------------
+-- Table structure for userportrait
+-- ----------------------------
 DROP TABLE IF EXISTS `userportrait`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `userportrait` (
+CREATE TABLE `userportrait`  (
   `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `user_gender` enum('male','female') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `user_age` int DEFAULT NULL,
-  `birth_day` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `travel_history` json DEFAULT NULL,
-  `preferred_travel_season` enum('spring','summer','autumn','winter') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `interests` json DEFAULT NULL,
-  `place_residence` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `occupation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `education_level` enum('Elementary school and below','junior high school','high school','college','undergraduate','master''s degree and above') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `budget` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `income_level` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `consumption_level` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `relationship` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '社交关系数据（喜欢一个人或与朋友一起出行等）',
-  `other_profile` json DEFAULT NULL,
-  `click_rate` float DEFAULT NULL COMMENT '用户一个月内的点击率，可针对特定的旅游推荐内容计算',
-  `conversion_rate` float DEFAULT NULL COMMENT '用户一个月内的转化率，如从查看推荐到实际预订旅游行程的转化比例',
-  `recent_behavior_count` int DEFAULT '0' COMMENT '用户周内特定行为（如搜索旅游目的地、查看旅游攻略等）的次数',
+  `user_gender` enum('male','female') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `user_age` int NULL DEFAULT NULL,
+  `birth_day` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `travel_history` json NULL,
+  `preferred_travel_season` enum('spring','summer','autumn','winter') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `interests` json NULL,
+  `place_residence` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `occupation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `education_level` enum('Elementary school and below','junior high school','high school','college','undergraduate','master''s degree and above') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `budget` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `income_level` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `consumption_level` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `relationship` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '社交关系数据（喜欢一个人或与朋友一起出行等）',
+  `other_profile` json NULL,
+  `click_rate` float NULL DEFAULT NULL COMMENT '用户一个月内的点击率，可针对特定的旅游推荐内容计算',
+  `conversion_rate` float NULL DEFAULT NULL COMMENT '用户一个月内的转化率，如从查看推荐到实际预订旅游行程的转化比例',
+  `recent_behavior_count` int NULL DEFAULT 0 COMMENT '用户周内特定行为（如搜索旅游目的地、查看旅游攻略等）的次数',
   PRIMARY KEY (`user_id`) USING BTREE,
-  CONSTRAINT `user_por` FOREIGN KEY (`user_id`) REFERENCES `useraccount` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  CONSTRAINT `user_por` FOREIGN KEY (`user_id`) REFERENCES `userdata` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
---
--- Dumping data for table `userportrait`
---
+-- ----------------------------
+-- Records of userportrait
+-- ----------------------------
 
-LOCK TABLES `userportrait` WRITE;
-/*!40000 ALTER TABLE `userportrait` DISABLE KEYS */;
-/*!40000 ALTER TABLE `userportrait` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2024-12-11 18:06:35
+SET FOREIGN_KEY_CHECKS = 1;
