@@ -12,6 +12,7 @@ router.post('/login', userController.login);
 // Route to get all users (for admin testing)
 router.get('/get', userController.getAllUsers);
 
-router.delete('/delete', userController.deleteUser);
+router.post('/getCaptcha', userController.getCaptcha);
+//router.delete('/delete', userController.deleteUser);
 
 export default router;

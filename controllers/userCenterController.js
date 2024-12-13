@@ -3,17 +3,17 @@ import { executeQuery } from '../config/dbconfig.js';
 
 
 const updateNickName = async (req, res) => {
-  const { user_id, nickName } = req.body;
+  const { userId, nickName } = req.body;
 
   // Validate input
-  if (!user_id || !nickName) {
-    return res.status(400).json({ error: 'user_id and nickName are required' });
+  if (!userId || !nickName) {
+    return res.status(400).json({ error: 'userId and nickName are required' });
   }
 
   try {
     // 构建 SQL 更新语句  
     const sql = 'UPDATE userdata SET nickname = ? WHERE user_id = ?';  
-    const result = await executeQuery(sql, [nickName, user_id]);
+    const result = await executeQuery(sql, [nickName, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
@@ -28,17 +28,17 @@ const updateNickName = async (req, res) => {
 };
 
 const updateGender = async (req, res) => {
-  const { user_id, gender } = req.body;
+  const { userId, gender } = req.body;
 
   // Validate input
-  if (!user_id || !gender) {
-    return res.status(400).json({ error: 'user_id and gender are required' });
+  if (!userId || !gender) {
+    return res.status(400).json({ error: 'userId and gender are required' });
   }
 
   try {
     // 构建 SQL 更新语句  
     const sql = 'UPDATE userdata SET gender = ? WHERE user_id = ?';  
-    const result = await executeQuery(sql, [gender, user_id]);
+    const result = await executeQuery(sql, [gender, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
@@ -53,17 +53,17 @@ const updateGender = async (req, res) => {
 };
 
 const updateAge = async (req, res) => {
-  const { user_id, age } = req.body;
+  const { userId, age } = req.body;
 
   // Validate input
-  if (!user_id || !age) {
-    return res.status(400).json({ error: 'user_id and age are required' });
+  if (!userId || !age) {
+    return res.status(400).json({ error: 'userId and age are required' });
   }
 
   try {
     // 构建 SQL 更新语句  
     const sql = 'UPDATE userdata SET age = ? WHERE user_id = ?';  
-    const result = await executeQuery(sql, [age, user_id]);
+    const result = await executeQuery(sql, [age, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
@@ -78,17 +78,17 @@ const updateAge = async (req, res) => {
 };
 
 const updateSchool = async (req, res) => {
-  const { user_id, school } = req.body;
+  const { userId, school } = req.body;
 
   // Validate input
-  if (!user_id || !school) {
-    return res.status(400).json({ error: 'user_id and school are required' });
+  if (!userId || !school) {
+    return res.status(400).json({ error: 'userId and school are required' });
   }
 
   try {
     // 构建 SQL 更新语句  
     const sql = 'UPDATE userdata SET school = ? WHERE user_id = ?';  
-    const result = await executeQuery(sql, [school, user_id]);
+    const result = await executeQuery(sql, [school, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
@@ -103,17 +103,17 @@ const updateSchool = async (req, res) => {
 };
 
 const updateDesc =  async (req, res) => {
-  const { user_id, desc } = req.body;
+  const { userId, desc } = req.body;
 
   // Validate input
-  if (!user_id || !desc) {
-    return res.status(400).json({ error: 'user_id and description are required' });
+  if (!userId || !desc) {
+    return res.status(400).json({ error: 'userId and description are required' });
   }
 
   try {
     // 构建 SQL 更新语句  
     const sql = 'UPDATE userdata SET description = ? WHERE user_id = ?';  
-    const result = await executeQuery(sql, [desc, user_id]);
+    const result = await executeQuery(sql, [desc, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
@@ -128,17 +128,17 @@ const updateDesc =  async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-  const { user_id, password } = req.body;
+  const { userId, password } = req.body;
 
   // Validate input
-  if (!user_id || !password) {
-    return res.status(400).json({ error: 'user_id and desc are required' });
+  if (!userId || !password) {
+    return res.status(400).json({ error: 'userId and desc are required' });
   }
 
   try {
     // 构建 SQL 更新语句  
     const sql = 'UPDATE userdata SET password = ? WHERE user_id = ?';  
-    const result = await executeQuery(sql, [password, user_id]);
+    const result = await executeQuery(sql, [password, userId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
@@ -153,12 +153,12 @@ const updatePassword = async (req, res) => {
 };
 
 const persondata = async (req, res) => {
-  const { user_id } = req.body;
+  const { userId } = req.body;
 
   const sql = 'SELECT * FROM userdata WHERE user_id = ?';
 
   try {
-      const result = await executeQuery(sql, [user_id]); // 执行查询
+      const result = await executeQuery(sql, [userId]); // 执行查询
       if (result.length > 0) {
         const userData = result[0]; // 假设返回的用户数据是数组，取第一个元素
 
