@@ -88,7 +88,7 @@ const getCaptcha = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { username, email, password, emailCode, QCode } = req.body;
+    const { username, email, password, emailCode, Qcode } = req.body;
     console.log('Received register request:', req.body);
 
     // 判断验证码是否正确
@@ -100,8 +100,8 @@ const register = async (req, res) => {
     }
 
     // 检查 QCode 是否有效
-    const checkQCodeSql = 'SELECT * FROM qcode WHERE QCode = ?';
-    const qCodeResult = await executeQuery(checkQCodeSql, [QCode]);
+    const checkQCodeSql = 'SELECT * FROM qcode WHERE Qcode = ?';
+    const qCodeResult = await executeQuery(checkQCodeSql, [Qcode]);
 
     if (qCodeResult.length === 0) {
       return res.status(403).json({ message: '邀请码无效或不存在' });
