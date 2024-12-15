@@ -88,15 +88,23 @@ const getCaptcha = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { username, email, password, emailCode } = req.body;
+    const { username, email, password, emailCode, QCode } = req.body;
     console.log('Received register request:', req.body);
 
     // 判断验证码是否正确
-    const checkCodeSql = 'SELECT * FROM code WHERE email =? AND veri_code =?';
+    const checkCodeSql = 'SELECT * FROM code WHERE email = ? AND veri_code = ?';
     const result = await executeQuery(checkCodeSql, [email, emailCode]);
 
-    if(result.length == 0){
+    if (result.length === 0) {
       return res.status(403).json({ message: '验证码不正确' });
+    }
+
+    // 检查 QCode 是否有效
+    const checkQCodeSql = 'SELECT * FROM qcode WHERE QCode = ?';
+    const qCodeResult = await executeQuery(checkQCodeSql, [QCode]);
+
+    if (qCodeResult.length === 0) {
+      return res.status(403).json({ message: '邀请码无效或不存在' });
     }
 
     // 分配userId，使用唯一标识符库
@@ -107,17 +115,16 @@ const register = async (req, res) => {
     const school = '未知';
     const desc = '默认简介';
 
+    // 新增用户信息
     const sql = 'INSERT INTO userdata (username, user_id, email, password, nickname, gender, age, school, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-    // 存储用户信息
     await executeQuery(sql, [username, userId, email, password, nickName, gender, age, school, desc]);
 
     res.send({
       message: 'Data inserted successfully',
-      data: {  
-        userId: userId,  
-        // 可以添加其他需要返回给前端的字段  
-      }, 
+      data: {
+        userId: userId,
+        // 可以添加其他需要返回给前端的字段
+      },
       code: 200,
     });
   } catch (error) {
