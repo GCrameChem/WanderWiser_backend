@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : TestOne
+ Source Server         : wanderwiser
  Source Server Type    : MySQL
- Source Server Version : 80040 (8.0.40)
- Source Host           : localhost:3306
- Source Schema         : yk
+ Source Server Version : 80040 (8.0.40-0ubuntu0.22.04.1)
+ Source Host           : 47.108.162.90:3306
+ Source Schema         : ww
 
  Target Server Type    : MySQL
- Target Server Version : 80040 (8.0.40)
+ Target Server Version : 80040 (8.0.40-0ubuntu0.22.04.1)
  File Encoding         : 65001
 
- Date: 13/12/2024 15:51:35
+ Date: 15/12/2024 20:36:37
 */
 
 SET NAMES utf8mb4;
@@ -33,6 +33,7 @@ CREATE TABLE `activity`  (
   `activity_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `recommended_dishes` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `plan_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`act_id`, `day`) USING BTREE,
   INDEX `day_act`(`day` ASC) USING BTREE,
   CONSTRAINT `day_act` FOREIGN KEY (`day`) REFERENCES `dailytrip` (`day`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -41,6 +42,23 @@ CREATE TABLE `activity`  (
 -- ----------------------------
 -- Records of activity
 -- ----------------------------
+INSERT INTO `activity` VALUES ('010d1c27-8bb9-4268-8154-13a50c268638', '逛科技馆', 1, '2024-08-05 08:00:00', '2024-08-05 11:00:00', '![四川博物馆](https://example.com/scmuseum.jpg)', '[点击预约门票](https://example.com/book-scmuseum)', '地铁1号线', '逛四川科技馆', '天府广场', '陶德砂锅', 'f890e665-08ac-4daf-8ae9-77d38d9b6b65');
+INSERT INTO `activity` VALUES ('010d1c27-8bb9-4268-8154-13a50c268639', '逛成都博物馆', 1, '2024-08-05 13:30:00', '2024-08-05 17:00:00', '![四川博物馆](https://example.com/scmuseum.jpg)', '[点击预约门票](https://example.com/book-scmuseum)', '步行', '逛成都博物馆', '天府广场', '老妈蹄花', 'f890e665-08ac-4daf-8ae9-77d38d9b6b65');
+INSERT INTO `activity` VALUES ('010d1c27-8bb9-4268-8154-13a50c268640', '逛四川美术馆', 1, '2024-08-05 19:00:00', '2024-08-05 20:00:00', '![四川博物馆](https://example.com/scmuseum.jpg)', '[点击预约门票](https://example.com/book-scmuseum)', '步行', '逛四川美术馆', '天府广场', '白家肥肠粉', 'f890e665-08ac-4daf-8ae9-77d38d9b6b65');
+
+-- ----------------------------
+-- Table structure for code
+-- ----------------------------
+DROP TABLE IF EXISTS `code`;
+CREATE TABLE `code`  (
+  `veri_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of code
+-- ----------------------------
+INSERT INTO `code` VALUES ('396178', '1870855020@qq.com');
 
 -- ----------------------------
 -- Table structure for dailytrip
@@ -66,6 +84,9 @@ CREATE TABLE `dailytrip`  (
 -- ----------------------------
 -- Records of dailytrip
 -- ----------------------------
+INSERT INTO `dailytrip` VALUES ('f890e665-08ac-4daf-8ae9-77d38d9b6b65', 1, '四川博物馆', '2024-08-05', '晴', '历史与文化', '参观四川博物馆，感受四川深厚的历史文化底蕴。', '成都市中心某酒店', '今天参观了四川博物馆，了解了四川的历史文化，同时游览了天府广场。充实的一天结束啦！', '雨伞（防晒或下雨用）,舒适的运动鞋,笔记本（用于记录见闻）');
+INSERT INTO `dailytrip` VALUES ('f890e665-08ac-4daf-8ae9-77d38d9b6b65', 2, '宽窄巷子和锦里古街', '2024-08-06', '雨', '历史与文化', '游逛宽窄巷子、锦鲤古街', '成都市亚朵酒店', '今天逛了古色古香的成都，体验非常好！', '雨伞（防晒或下雨用）,充电宝,笔记本（用于记录见闻）');
+INSERT INTO `dailytrip` VALUES ('f890e665-08ac-4daf-8ae9-77d38d9b6b65', 3, '人民公园', '2024-08-07', '晴', '市井生活', '体验茶文化', '成都市希尔顿酒店', '今天在人民公园喝盖碗茶，看变脸表演', '口罩、纸巾');
 
 -- ----------------------------
 -- Table structure for recommendation
@@ -104,6 +125,9 @@ CREATE TABLE `tripmanage`  (
 -- ----------------------------
 -- Records of tripmanage
 -- ----------------------------
+INSERT INTO `tripmanage` VALUES ('f890e665-08ac-4daf-8ae9-77d38d9b6b65', '984731e8-b6ad-4b7f-bb56-fa76681dfb01', '四川之旅：大熊猫的家园与自然奇观之旅', 3);
+INSERT INTO `tripmanage` VALUES ('f890e665-08ac-4daf-8ae9-77d38d9b6b66', '984731e8-b6ad-4b7f-bb56-fa76681dfb01', '北京之旅：故宫邂逅', 5);
+INSERT INTO `tripmanage` VALUES ('f890e665-08ac-4daf-8ae9-77d38d9b6b67', '984731e8-b6ad-4b7f-bb56-fa76681dfb01', '敦煌之旅：人文与艺术体验', 8);
 
 -- ----------------------------
 -- Table structure for useraccount
@@ -155,6 +179,7 @@ CREATE TABLE `userdata`  (
 -- ----------------------------
 INSERT INTO `userdata` VALUES ('43acd90c-05d6-4c1f-8acf-897179a1d956', 'gin', NULL, '1234', 'G', '未知', '999', 'SCU', '默认简介');
 INSERT INTO `userdata` VALUES ('47d1be6c-b00d-4eee-9043-36fdf2a36c5d', 'gin', 'wangyuhan030913@163.com', '123456', '默认昵称', '未知', '未知', '未知', '默认简介');
+INSERT INTO `userdata` VALUES ('4b94a82b-0426-4b1c-aa72-bc2365d76947', 'lbz', '1870855020@qq.com', '123', '默认昵称', '未知', '未知', '未知', '默认简介');
 INSERT INTO `userdata` VALUES ('7038d900-8773-4312-a8b4-1ff906d6783d', 'gin', NULL, '1234', '默认昵称', '未知', '未知', '未知', '默认简介');
 INSERT INTO `userdata` VALUES ('8b350830-4a84-43f5-8797-cc75b65566c9', 'tqq', '2058406739@qq.com', '1207', '默认昵称', '未知', '未知', '未知', '默认简介');
 INSERT INTO `userdata` VALUES ('984731e8-b6ad-4b7f-bb56-fa76681dfb01', 'wang', '1802231683@qq.com', '12345', '小涵', '女', '20', '四川大学', '默认简介');
